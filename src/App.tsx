@@ -6,6 +6,7 @@ import { NotFound } from "./pages/NotFound";
 import { Register } from "./pages/Register";
 import { Auth } from "./components/Auth";
 import { Dashboard } from "./pages/Dashboard";
+import { Search } from "./pages/Search";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/search" element={<Search />} />
           {/* Protected routes */}
           <Route
             path="/dashboard"

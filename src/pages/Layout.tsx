@@ -108,7 +108,12 @@ export const Layout = () => {
                       <p> Username: {user.name} </p>
                     </li>
                     <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
-
+                    <li className="text-gray-700 hover:text-indigo-600">
+                      <Link to="/search" className="block">
+                        Search for a certificate
+                      </Link>
+                    </li>
+                    <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
                     <li className="text-gray-700 hover:text-indigo-600">
                       <Link to="/dashboard" className="block">
                         Dashboard
@@ -137,6 +142,12 @@ export const Layout = () => {
                         className="block py-3 px-4 font-medium text-center text-white bg-blue-500 hover:bg-blue-600 active:bg-blue-700 active:shadow-none rounded-lg shadow md:inline"
                       >
                         Register
+                      </Link>
+                    </li>
+                    <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
+                    <li className="text-gray-700 hover:text-indigo-600">
+                      <Link to="/search" className="block">
+                        Search for a certificate
                       </Link>
                     </li>
                   </>
