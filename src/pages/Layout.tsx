@@ -116,6 +116,12 @@ export const Layout = () => {
                     <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
                     <li className="text-gray-700 hover:text-indigo-600">
                       <Link to="/dashboard" className="block">
+                        Request all user certificates
+                      </Link>
+                    </li>
+                    <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
+                    <li className="text-gray-700 hover:text-indigo-600">
+                      <Link to="/dashboard" className="block">
                         Dashboard
                       </Link>
                     </li>
@@ -146,6 +152,12 @@ export const Layout = () => {
                     </li>
                     <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
                     <li className="text-gray-700 hover:text-indigo-600">
+                      <Link to="/dashboard" className="block">
+                        Request all user certificates
+                      </Link>
+                    </li>
+                    <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
+                    <li className="text-gray-700 hover:text-indigo-600">
                       <Link to="/search" className="block">
                         Search for a certificate
                       </Link>
@@ -167,7 +179,10 @@ export const Layout = () => {
             <p>© 2023 Authficate</p>
             <ul className="flex items-center justify-between gap-4 pt-6 sm:text-sm sm:mt-0">
               <li className="text-gray-800 hover:text-gray-500 duration-150">
-                <Link to="https://github.com/mohalkurdi" target="_blank">
+                <Link
+                  to="https://github.com/MohAlkurdi/Authficate-frontend"
+                  target="_blank"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="#000000"
