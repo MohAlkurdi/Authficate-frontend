@@ -25,8 +25,8 @@ export const CertificateTable: React.FC<CertificateTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {certificates.map((certificate) => (
-            <tr key={certificate.id} className="border-t text-center">
+          {certificates.map((certificate, index) => (
+            <tr key={index} className="border-t text-center">
               <td className="px-4 py-2">{certificate.unique_number}</td>
               <td className="px-4 py-2">{certificate.course.name}</td>
               <td className="px-4 py-2">{certificate.course.description}</td>

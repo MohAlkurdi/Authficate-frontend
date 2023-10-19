@@ -1,85 +1,93 @@
 import React, { useState } from "react";
-import api from "../api";
+import api from "../api"; // Replace with your actual API instance for the third API
 import { CertificateTable } from "./CertificateTable";
 
-interface CertificateResponse {
-  certificate: Array<{
-    unique_number: string;
-    course: {
-      name: string;
-      description: string;
-    };
-  }>;
+interface Certificate {
+  id: number;
+  unique_number: string;
+  website_name: string;
+  user_id: number;
+  course: {
+    name: string;
+    description: string;
+  };
 }
 
 export const UserCertificate: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [response, setResponse] = useState<CertificateResponse | null>(null);
+  const [memberId, setMemberId] = useState("");
+  const [certificates, setCertificates] = useState<{
+    [websiteName: string]: Certificate[];
+  }>({});
+  const [error, setError] = useState<string | null>(null);
+
+  const groupCertificatesByWebsite = (certificates: Certificate[]) => {
+    const groupedCertificates: Record<string, Certificate[]> = {};
+    certificates.forEach((certificate) => {
+      const websiteName = certificate.website_name;
+      if (!groupedCertificates[websiteName]) {
+        groupedCertificates[websiteName] = [];
+      }
+      groupedCertificates[websiteName].push(certificate);
+    });
+    return groupedCertificates;
+  };
 
   const handleRequest = async () => {
-    if (!email || !password) {
-      alert("Please provide both email and password."); // Basic validation
+    if (!memberId || memberId.length < 10 || memberId.length > 10) {
+      setError("Please provide a member ID.");
       return;
     }
 
     try {
-      const requestData = {
-        email: email,
-        password: password,
-      };
+      const response = await api.get(`/user/certificates/${memberId}`);
 
-      const response = await api.post("/get-certificates", requestData);
-
-      if (response.data.certificate) {
+      if (
+        response.data.certificates &&
+        response.data.certificates.certificates.length > 0
+      ) {
+        const groupedCertificates = groupCertificatesByWebsite(
+          response.data.certificates.certificates
+        );
         // Check if the response contains certificates
-        setResponse(response.data);
+        setCertificates(groupedCertificates);
+        setError(null);
       } else {
-        alert("No certificates found in the response.");
+        setError("No certificates found in the response.");
       }
     } catch (error) {
       console.error("Error sending certificate request:", error);
+      setError("An error occurred while fetching certificates.");
     }
   };
 
   return (
     <div className="max-w-screen-lg mx-auto p-6">
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold mb-4">
-          Request your data from EaseLearn website
-        </h2>
+        <h2 className="text-2xl font-bold mb-4">Request your certificates</h2>
         <div className="mb-4">
           <input
             type="text"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-lg"
-          />
-        </div>
-        <div className="mb-4">
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Member ID"
+            value={memberId}
+            onChange={(e) => setMemberId(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-lg"
           />
         </div>
         <button
           onClick={handleRequest}
-          className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+          className="bg-blue-500 text-white p-2 rounded-lg hover-bg-blue-600"
         >
           Request Certificates
         </button>
+        {error && <div className="text-red-600 py-4">{error}</div>}
       </div>
 
-      {response && response.certificate && response.certificate.length > 0 && (
-        <div className="mt-6">
-          <h2 className="text-2xl font-bold mb-4">Certificates</h2>
-          <CertificateTable certificates={response.certificate} />
+      {Object.keys(certificates).map((websiteName) => (
+        <div key={websiteName}>
+          <h2 className="text-2xl font-bold mt-4">{websiteName}</h2>
+          <CertificateTable certificates={certificates[websiteName]} />
         </div>
-      )}
+      ))}
     </div>
   );
 };
